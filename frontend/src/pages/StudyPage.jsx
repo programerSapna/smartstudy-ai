@@ -62,37 +62,29 @@ export default function StudyPage() {
     setAnswers({ ...answers, [questionIndex]: option });
   };
 
-  const handleSubmitQuiz = async () => {
+const handleSubmitQuiz = async () => {
     let correct = 0;
     quizData.forEach((q, i) => {
       const userAnswer = answers[i] ? answers[i].trim().toLowerCase() : '';
       const correctAns = q.correctAnswer ? q.correctAnswer.trim().toLowerCase() : '';
-      if (userAnswer.startsWith(correctAns) || userAnswer === correctAns) correct++;
+      
+      // Check karo - letter match (A, B, C, D) ya full text match
+      if (userAnswer === correctAns) {
+        correct++;
+      } else if (userAnswer.startsWith(correctAns + ' ') || 
+                 userAnswer.startsWith(correctAns + '.')) {
+        correct++;
+      } else if (correctAns.length === 1 && userAnswer.charAt(0) === correctAns) {
+        correct++;
+      }
     });
     setScore(correct);
     const userId = localStorage.getItem('userId') || '1';
-    await saveScore({ userId, score: correct, totalQuestions: quizData.length });
-  };
-
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setFileLoading(true);
-    setUploadedFile(file.name);
-    try {
-      const res = await uploadPdf(file);
-      if (res.data.text && res.data.text.trim()) {
-        setContent(res.data.text);
-      } else {
-        alert('No text found. Please try another file.');
-        setUploadedFile('');
-      }
-    } catch (err) {
-      alert('Failed to upload file. Please try again.');
-      setUploadedFile('');
-    } finally {
-      setFileLoading(false);
-    }
+    await saveScore({
+      userId,
+      score: correct,
+      totalQuestions: quizData.length
+    });
   };
 
   const handleLogout = () => {
