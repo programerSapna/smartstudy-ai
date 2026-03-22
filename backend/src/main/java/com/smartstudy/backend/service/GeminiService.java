@@ -28,11 +28,9 @@ public class GeminiService {
             questionCount = 20;
         }
 
-        String prompt = "Based on the following study content, generate exactly " + questionCount +
-                " multiple choice questions. " +
-                "Return ONLY a valid JSON array with no extra text. " +
-                "Each object must have fields: question, options (array of exactly 4 options), correctAnswer. " +
-                "correctAnswer must be exactly one of the 4 options. " +
+        String prompt = "Generate exactly " + questionCount + " multiple choice questions based on this content. " +
+                "Return ONLY a pure JSON array, no markdown, no code blocks, no extra text. " +
+                "Format: [{\"question\":\"...\",\"options\":[\"A ...\",\"B ...\",\"C ...\",\"D ...\"],\"correctAnswer\":\"A\"}] " +
                 "Content: " + content;
         return callGemini(prompt);
     }
