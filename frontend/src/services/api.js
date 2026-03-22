@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8081/api';
-
+const BASE_URL = 'https://smartstudy-ai-production.up.railway.app/api';
 const getHeaders = () => ({
   headers: {
     'Authorization': `Bearer ${localStorage.getItem('token')}`,
