@@ -1,0 +1,17 @@
+2026-03-18T17:53:14.714Z [INFO] ----------------------invoke redirect_to_upgrade_agent----------------------
+2026-03-18T17:53:14.715Z [INFO] [Tool.invoke]({name: redirect_to_upgrade_agent, input: {
+  "projectPath": "d:\\smartstudy-ai\\backend",
+  "originalPrompt": "upgrade java runtime to the LTS version Java 21"
+}}).
+2026-03-18T17:53:14.715Z [INFO] [Tool.invoke] do invoke.
+2026-03-18T17:53:14.715Z [INFO] [RedirectToUpgradeAgentTool] Redirecting to custom agent "modernize-java" with prompt: upgrade java runtime to the LTS version Java 21
+2026-03-18T17:53:14.784Z [INFO] [RedirectToUpgradeAgentTool] Redirected to custom agent "modernize-java". User MUST switch to the new agent to continue.
+2026-03-18T17:53:14.785Z [INFO] [Tool.invoke]({result: {
+  "message": "The upgrade request has been redirected to the \"modernize-java\" agent in a new chat session. You MUST! stop processing in this session.",
+  "result": {
+    "redirected": true,
+    "agentName": "modernize-java",
+    "prompt": "upgrade java runtime to the LTS version Java 21"
+  }
+}}).
+2026-03-18T17:53:14.785Z [INFO] ----------------------invoked redirect_to_upgrade_agent----------------------

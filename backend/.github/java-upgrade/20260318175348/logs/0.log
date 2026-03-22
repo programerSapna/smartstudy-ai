@@ -1,0 +1,193 @@
+2026-03-18T17:53:48.164Z [INFO] ----------------------invoke report_event----------------------
+2026-03-18T17:53:48.164Z [INFO] [Tool.invoke]({name: report_event, input: {
+  "projectPath": "d:\\smartstudy-ai\\backend",
+  "event": "precheckCompleted",
+  "phase": "precheck",
+  "status": "succeeded"
+}}).
+2026-03-18T17:53:48.164Z [INFO] [Tool.invoke] do invoke.
+2026-03-18T17:53:48.168Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'precheckCompleted' reported!\nSession ID: 20260318175348,\nSession Dir: d:\\smartstudy-ai\\backend\\.github\\java-upgrade\\20260318175348"
+}}).
+2026-03-18T17:53:48.169Z [INFO] ----------------------invoked report_event----------------------
+2026-03-18T17:53:57.933Z [INFO] ---------------------prepare list_jdks----------------------
+2026-03-18T17:53:57.933Z [INFO] [Tool.prepareInvocation]({name: list_jdks, input: {
+  "sessionId": "20260318175348"
+}}).
+2026-03-18T17:53:57.933Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-18T17:53:57.934Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "List jdks"
+}}).
+2026-03-18T17:53:57.934Z [INFO] ----------------------prepared list_jdks----------------------
+2026-03-18T17:53:57.994Z [INFO] ----------------------invoke list_jdks----------------------
+2026-03-18T17:53:57.994Z [INFO] [Tool.invoke]({name: list_jdks, input: {
+  "sessionId": "20260318175348"
+}}).
+2026-03-18T17:53:57.995Z [INFO] [Tool.invoke] do invoke.
+2026-03-18T17:53:58.008Z [INFO] [Tool.invoke]({result: {
+  "message": "We found following jdks in your system:\n\n1. Java 21.0.1\n   📁 Path: C:\\Program Files\\Java\\jdk-21\\bin\n   🏷️ Source: PATH,JAVA_HOME\n\nTotal: 1 JDK installation(s) found"
+}}).
+2026-03-18T17:53:58.008Z [INFO] ----------------------invoked list_jdks----------------------
+2026-03-18T17:53:58.029Z [INFO] ---------------------prepare list_mavens----------------------
+2026-03-18T17:53:58.030Z [INFO] [Tool.prepareInvocation]({name: list_mavens, input: {
+  "sessionId": "20260318175348",
+  "includeVersion": true
+}}).
+2026-03-18T17:53:58.031Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-18T17:53:58.031Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "List mavens"
+}}).
+2026-03-18T17:53:58.031Z [INFO] ----------------------prepared list_mavens----------------------
+2026-03-18T17:53:58.077Z [INFO] ----------------------invoke list_mavens----------------------
+2026-03-18T17:53:58.078Z [INFO] [Tool.invoke]({name: list_mavens, input: {
+  "sessionId": "20260318175348",
+  "includeVersion": true
+}}).
+2026-03-18T17:53:58.078Z [INFO] [Tool.invoke] do invoke.
+2026-03-18T17:53:58.081Z [INFO] [Tool.invoke]({result: {
+  "message": "No Maven installations found."
+}}).
+2026-03-18T17:53:58.081Z [INFO] ----------------------invoked list_mavens----------------------
+2026-03-18T18:21:00.039Z [INFO] ---------------------prepare report_event----------------------
+2026-03-18T18:21:00.039Z [INFO] [Tool.prepareInvocation]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "planInitialized",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.040Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-18T18:21:00.040Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-18T18:21:00.040Z [INFO] ----------------------prepared report_event----------------------
+2026-03-18T18:21:00.086Z [INFO] ----------------------invoke report_event----------------------
+2026-03-18T18:21:00.087Z [INFO] [Tool.invoke]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "planInitialized",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.087Z [INFO] [Tool.invoke] do invoke.
+2026-03-18T18:21:00.087Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planInitialized' reported!\nSession ID: 20260318175348,\nSession Dir: d:\\smartstudy-ai\\backend\\.github\\java-upgrade\\20260318175348"
+}}).
+2026-03-18T18:21:00.087Z [INFO] ----------------------invoked report_event----------------------
+2026-03-18T18:21:00.102Z [INFO] ---------------------prepare report_event----------------------
+2026-03-18T18:21:00.103Z [INFO] [Tool.prepareInvocation]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "environmentAnalyzed",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.103Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-18T18:21:00.104Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-18T18:21:00.104Z [INFO] ----------------------prepared report_event----------------------
+2026-03-18T18:21:00.154Z [INFO] ----------------------invoke report_event----------------------
+2026-03-18T18:21:00.154Z [INFO] [Tool.invoke]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "environmentAnalyzed",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.154Z [INFO] [Tool.invoke] do invoke.
+2026-03-18T18:21:00.155Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'environmentAnalyzed' reported!\nSession ID: 20260318175348,\nSession Dir: d:\\smartstudy-ai\\backend\\.github\\java-upgrade\\20260318175348"
+}}).
+2026-03-18T18:21:00.155Z [INFO] ----------------------invoked report_event----------------------
+2026-03-18T18:21:00.170Z [INFO] ---------------------prepare report_event----------------------
+2026-03-18T18:21:00.170Z [INFO] [Tool.prepareInvocation]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "dependenciesAnalyzed",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.170Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-18T18:21:00.170Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-18T18:21:00.171Z [INFO] ----------------------prepared report_event----------------------
+2026-03-18T18:21:00.282Z [INFO] ----------------------invoke report_event----------------------
+2026-03-18T18:21:00.283Z [INFO] [Tool.invoke]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "dependenciesAnalyzed",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.283Z [INFO] [Tool.invoke] do invoke.
+2026-03-18T18:21:00.283Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'dependenciesAnalyzed' reported!\nSession ID: 20260318175348,\nSession Dir: d:\\smartstudy-ai\\backend\\.github\\java-upgrade\\20260318175348"
+}}).
+2026-03-18T18:21:00.284Z [INFO] ----------------------invoked report_event----------------------
+2026-03-18T18:21:00.299Z [INFO] ---------------------prepare report_event----------------------
+2026-03-18T18:21:00.300Z [INFO] [Tool.prepareInvocation]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "upgradePathDesigned",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.300Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-18T18:21:00.300Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-18T18:21:00.300Z [INFO] ----------------------prepared report_event----------------------
+2026-03-18T18:21:00.342Z [INFO] ----------------------invoke report_event----------------------
+2026-03-18T18:21:00.342Z [INFO] [Tool.invoke]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "upgradePathDesigned",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.342Z [INFO] [Tool.invoke] do invoke.
+2026-03-18T18:21:00.342Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'upgradePathDesigned' reported!\nSession ID: 20260318175348,\nSession Dir: d:\\smartstudy-ai\\backend\\.github\\java-upgrade\\20260318175348"
+}}).
+2026-03-18T18:21:00.343Z [INFO] ----------------------invoked report_event----------------------
+2026-03-18T18:21:00.357Z [INFO] ---------------------prepare report_event----------------------
+2026-03-18T18:21:00.357Z [INFO] [Tool.prepareInvocation]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "planReviewed",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.357Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-18T18:21:00.357Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-18T18:21:00.357Z [INFO] ----------------------prepared report_event----------------------
+2026-03-18T18:21:00.403Z [INFO] ----------------------invoke report_event----------------------
+2026-03-18T18:21:00.403Z [INFO] [Tool.invoke]({name: report_event, input: {
+  "sessionId": "20260318175348",
+  "event": "planReviewed",
+  "phase": "plan",
+  "status": "succeeded",
+  "projectPath": "d:\\smartstudy-ai\\backend"
+}}).
+2026-03-18T18:21:00.404Z [INFO] [Tool.invoke] do invoke.
+2026-03-18T18:21:00.404Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planReviewed' reported!\nSession ID: 20260318175348,\nSession Dir: d:\\smartstudy-ai\\backend\\.github\\java-upgrade\\20260318175348"
+}}).
+2026-03-18T18:21:00.404Z [INFO] ----------------------invoked report_event----------------------
+2026-03-18T18:21:04.101Z [INFO] ---------------------prepare confirm_upgrade_plan----------------------
+2026-03-18T18:21:04.102Z [INFO] [Tool.prepareInvocation]({name: confirm_upgrade_plan, input: {
+  "sessionId": "20260318175348"
+}}).
+2026-03-18T18:21:04.102Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-18T18:21:04.103Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Review [upgrade plan](file:///d:/smartstudy-ai/backend/.github/java-upgrade/20260318175348/plan.md)",
+  "confirmationMessages": {
+    "title": "Plan generated",
+    "message": "Please review the generated plan and make any necessary adjustments before proceeding. You can modify the generated [`plan.md`](file:///d:/smartstudy-ai/backend/.github/java-upgrade/20260318175348/plan.md) directly."
+  }
+}}).
+2026-03-18T18:21:04.104Z [INFO] ----------------------prepared confirm_upgrade_plan----------------------
