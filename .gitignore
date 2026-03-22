@@ -1,0 +1,12 @@
+# Sensitive files
+backend/src/main/resources/application.properties
+
+# Unnecessary files
+*.pdf
+*.zip
+
+# Build files
+backend/target/
+
+# Node modules
+frontend/node_modules/
