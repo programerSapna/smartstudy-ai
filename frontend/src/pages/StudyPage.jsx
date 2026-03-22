@@ -32,23 +32,38 @@ export default function StudyPage() {
     try {
       const res = await generateQuiz(content);
       const rawText = res.data.quiz;
+      console.log("Raw quiz:", rawText);
+      
       let parsed = null;
-      const jsonMatch = rawText.match(/\[[\s\S]*\]/);
-      if (jsonMatch) {
-        try { parsed = JSON.parse(jsonMatch[0]); } catch(e) {}
-      }
+      
+      // Method 1: Direct JSON array
+      try {
+        const jsonMatch = rawText.match(/\[[\s\S]*\]/);
+        if (jsonMatch) parsed = JSON.parse(jsonMatch[0]);
+      } catch(e) {}
+      
+      // Method 2: Code block
       if (!parsed) {
-        const codeMatch = rawText.match(/```(?:json)?\s*([\s\S]*?)```/);
-        if (codeMatch) {
-          try { parsed = JSON.parse(codeMatch[1]); } catch(e) {}
-        }
+        try {
+          const codeMatch = rawText.match(/```(?:json)?\s*([\s\S]*?)```/);
+          if (codeMatch) parsed = JSON.parse(codeMatch[1]);
+        } catch(e) {}
       }
+
+      // Method 3: Direct parse
+      if (!parsed) {
+        try {
+          parsed = JSON.parse(rawText);
+        } catch(e) {}
+      }
+
       if (parsed && parsed.length > 0) {
         setQuizData(parsed);
         setActiveTab('quiz');
         setAnswers({});
         setScore(null);
       } else {
+        console.log("Raw text:", rawText);
         alert('Failed to parse quiz. Please try again.');
       }
     } catch (err) {
