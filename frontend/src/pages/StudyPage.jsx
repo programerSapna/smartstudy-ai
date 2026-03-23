@@ -398,7 +398,7 @@ export default function StudyPage() {
                               </span>
                               {/* ✅ FIX: A. B. C. D. strip kar diya */}
                               <span style={styles.optionText}>
-                                {option.replace(/^[A-D]\.\s*/i, '')}
+                                {option.replace(/^[A-D]+\.\s*/i, '')}
                               </span>
                             </div>
                           ))}
