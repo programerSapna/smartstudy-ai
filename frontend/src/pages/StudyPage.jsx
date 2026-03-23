@@ -33,16 +33,14 @@ export default function StudyPage() {
       const res = await generateQuiz(content);
       const rawText = res.data.quiz;
       console.log("Raw quiz:", rawText);
-      
+
       let parsed = null;
-      
-      // Method 1: Direct JSON array
+
       try {
         const jsonMatch = rawText.match(/\[[\s\S]*\]/);
         if (jsonMatch) parsed = JSON.parse(jsonMatch[0]);
       } catch(e) {}
-      
-      // Method 2: Code block
+
       if (!parsed) {
         try {
           const codeMatch = rawText.match(/```(?:json)?\s*([\s\S]*?)```/);
@@ -50,7 +48,6 @@ export default function StudyPage() {
         } catch(e) {}
       }
 
-      // Method 3: Direct parse
       if (!parsed) {
         try {
           parsed = JSON.parse(rawText);
@@ -77,16 +74,15 @@ export default function StudyPage() {
     setAnswers({ ...answers, [questionIndex]: option });
   };
 
-const handleSubmitQuiz = async () => {
+  const handleSubmitQuiz = async () => {
     let correct = 0;
     quizData.forEach((q, i) => {
       const userAnswer = answers[i] ? answers[i].trim().toLowerCase() : '';
       const correctAns = q.correctAnswer ? q.correctAnswer.trim().toLowerCase() : '';
-      
-      // Check karo - letter match (A, B, C, D) ya full text match
+
       if (userAnswer === correctAns) {
         correct++;
-      } else if (userAnswer.startsWith(correctAns + ' ') || 
+      } else if (userAnswer.startsWith(correctAns + ' ') ||
                  userAnswer.startsWith(correctAns + '.')) {
         correct++;
       } else if (correctAns.length === 1 && userAnswer.charAt(0) === correctAns) {
@@ -101,6 +97,7 @@ const handleSubmitQuiz = async () => {
       totalQuestions: quizData.length
     });
   };
+
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -128,6 +125,7 @@ const handleSubmitQuiz = async () => {
       setFileLoading(false);
     }
   };
+
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = '/login';
@@ -136,279 +134,295 @@ const handleSubmitQuiz = async () => {
   const scorePercent = score !== null ? Math.round((score / quizData.length) * 100) : 0;
 
   return (
-    <div style={styles.page}>
-      {/* Background */}
-      <div style={{...styles.bgBlob, top: '-200px', left: '-200px'}} />
-      <div style={{...styles.bgBlob, bottom: '-200px', right: '-200px', background: 'radial-gradient(circle, #0891b2 0%, transparent 70%)'}} />
+    <>
+      {/* Mobile responsive styles */}
+      <style>{`
+        @media (max-width: 600px) {
+          .header { padding: 12px 16px !important; }
+          .headerBrand { font-size: 15px !important; }
+          .userName { display: none !important; }
+          .main { padding: 16px 12px !important; }
+          .contentArea { padding: 16px !important; }
+          .actionRow { flex-direction: column !important; }
+          .tabLabel { display: none !important; }
+          .tab { padding: 10px 8px !important; font-size: 20px !important; }
+          .scoreCircle { width: 90px !important; height: 90px !important; }
+          .scoreNumber { font-size: 22px !important; }
+          .uploadLabel { padding: 20px !important; }
+        }
+      `}</style>
 
-      {/* Header */}
-      <header style={styles.header}>
-        <div style={styles.headerLeft}>
-          <div style={styles.headerLogo}>📚</div>
-          <div>
-            <span style={styles.headerBrand}>SmartStudy <span style={{color: '#a5b4fc'}}>AI</span></span>
+      <div style={styles.page}>
+        {/* Background */}
+        <div style={{...styles.bgBlob, top: '-200px', left: '-200px'}} />
+        <div style={{...styles.bgBlob, bottom: '-200px', right: '-200px', background: 'radial-gradient(circle, #0891b2 0%, transparent 70%)'}} />
+
+        {/* Header */}
+        <header style={styles.header} className="header">
+          <div style={styles.headerLeft}>
+            <div style={styles.headerLogo}>📚</div>
+            <span style={styles.headerBrand} className="headerBrand">
+              SmartStudy <span style={{color: '#a5b4fc'}}>AI</span>
+            </span>
           </div>
-        </div>
-        <div style={styles.headerRight}>
-          <div style={styles.userChip}>
-            <div style={styles.userAvatar}>
-              {(localStorage.getItem('userName') || 'U')[0].toUpperCase()}
+          <div style={styles.headerRight}>
+            <div style={styles.userChip}>
+              <div style={styles.userAvatar}>
+                {(localStorage.getItem('userName') || 'U')[0].toUpperCase()}
+              </div>
+              <span style={styles.userName} className="userName">
+                {localStorage.getItem('userName')}
+              </span>
             </div>
-            <span style={styles.userName}>{localStorage.getItem('userName')}</span>
+            <button onClick={handleLogout} style={styles.logoutBtn}>Sign out</button>
           </div>
-          <button onClick={handleLogout} style={styles.logoutBtn}>Sign out</button>
-        </div>
-      </header>
+        </header>
 
-      {/* Main Content */}
-      <main style={styles.main}>
-        {/* Tab Navigation */}
-        <div style={styles.tabBar}>
-          {[
-            { id: 'upload', icon: '📝', label: 'Study Material' },
-            { id: 'summary', icon: '✨', label: 'AI Summary' },
-            { id: 'quiz', icon: '🎯', label: 'Quiz' },
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              style={activeTab === tab.id ? {...styles.tab, ...styles.tabActive} : styles.tab}
-            >
-              <span>{tab.icon}</span>
-              <span>{tab.label}</span>
-              {activeTab === tab.id && <div style={styles.tabIndicator} />}
-            </button>
-          ))}
-        </div>
+        {/* Main Content */}
+        <main style={styles.main} className="main">
+          {/* Tab Navigation */}
+          <div style={styles.tabBar}>
+            {[
+              { id: 'upload', icon: '📝', label: 'Study Material' },
+              { id: 'summary', icon: '✨', label: 'AI Summary' },
+              { id: 'quiz', icon: '🎯', label: 'Quiz' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={activeTab === tab.id ? {...styles.tab, ...styles.tabActive} : styles.tab}
+                className="tab"
+              >
+                <span>{tab.icon}</span>
+                <span className="tabLabel">{tab.label}</span>
+                {activeTab === tab.id && <div style={styles.tabIndicator} />}
+              </button>
+            ))}
+          </div>
 
-        {/* Content Area */}
-        <div style={styles.contentArea}>
+          {/* Content Area */}
+          <div style={styles.contentArea} className="contentArea">
 
-          {/* Upload Tab */}
-          {activeTab === 'upload' && (
-            <div style={styles.uploadSection}>
-              {/* File Upload Zone */}
-              <div style={styles.uploadZone}>
-                <label style={styles.uploadLabel}>
-                  <input
-                    type="file"
-                    accept=".pdf,.docx,.xlsx,.xls,.png,.jpg,.jpeg,.txt"
-                    onChange={handleFileUpload}
-                    style={{ display: 'none' }}
-                    disabled={fileLoading}
-                  />
-                  {fileLoading ? (
-                    <div style={styles.uploadContent}>
-                      <div style={styles.uploadSpinner}>⟳</div>
-                      <p style={styles.uploadText}>Extracting text...</p>
-                    </div>
-                  ) : uploadedFile ? (
-                    <div style={styles.uploadContent}>
-                      <div style={styles.uploadSuccess}>✓</div>
-                      <p style={styles.uploadFileName}>{uploadedFile}</p>
-                      <p style={styles.uploadSubtext}>Click to upload different file</p>
-                    </div>
-                  ) : (
-                    <div style={styles.uploadContent}>
-                      <div style={styles.uploadIcon}>📎</div>
-                      <p style={styles.uploadText}>Drop your file here or click to browse</p>
-                      <div style={styles.formatChips}>
-                        {['PDF', 'Word', 'Excel', 'Image', 'TXT'].map(f => (
-                          <span key={f} style={styles.chip}>{f}</span>
-                        ))}
+            {/* Upload Tab */}
+            {activeTab === 'upload' && (
+              <div style={styles.uploadSection}>
+                <div style={styles.uploadZone}>
+                  <label style={styles.uploadLabel} className="uploadLabel">
+                    <input
+                      type="file"
+                      accept=".pdf,.docx,.xlsx,.xls,.png,.jpg,.jpeg,.txt"
+                      onChange={handleFileUpload}
+                      style={{ display: 'none' }}
+                      disabled={fileLoading}
+                    />
+                    {fileLoading ? (
+                      <div style={styles.uploadContent}>
+                        <div style={styles.uploadSpinner}>⟳</div>
+                        <p style={styles.uploadText}>Extracting text...</p>
                       </div>
-                      <p style={styles.uploadSubtext}>Supports handwritten notes via OCR • Max 5 pages recommended</p>
-                    </div>
-                  )}
-                </label>
-              </div>
+                    ) : uploadedFile ? (
+                      <div style={styles.uploadContent}>
+                        <div style={styles.uploadSuccess}>✓</div>
+                        <p style={styles.uploadFileName}>{uploadedFile}</p>
+                        <p style={styles.uploadSubtext}>Click to upload different file</p>
+                      </div>
+                    ) : (
+                      <div style={styles.uploadContent}>
+                        <div style={styles.uploadIcon}>📎</div>
+                        <p style={styles.uploadText}>Drop your file here or click to browse</p>
+                        <div style={styles.formatChips}>
+                          {['PDF', 'Word', 'Excel', 'Image', 'TXT'].map(f => (
+                            <span key={f} style={styles.chip}>{f}</span>
+                          ))}
+                        </div>
+                        <p style={styles.uploadSubtext}>Supports handwritten notes via OCR • Max 5 pages recommended</p>
+                      </div>
+                    )}
+                  </label>
+                </div>
 
-              {/* Divider */}
-              <div style={styles.divider}>
-                <div style={styles.dividerLine} />
-                <span style={styles.dividerText}>or paste text directly</span>
-                <div style={styles.dividerLine} />
-              </div>
+                <div style={styles.divider}>
+                  <div style={styles.dividerLine} />
+                  <span style={styles.dividerText}>or paste text directly</span>
+                  <div style={styles.dividerLine} />
+                </div>
 
-              {/* Textarea */}
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Paste your chapter text, lecture notes, or any study material here..."
-                style={styles.textarea}
-              />
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="Paste your chapter text, lecture notes, or any study material here..."
+                  style={styles.textarea}
+                />
 
-              {/* Action Buttons */}
-              <div style={styles.actionRow}>
-                <button
-                  onClick={handleSummary}
-                  style={loading === 'summary' ? {...styles.btnSummary, opacity: 0.6} : styles.btnSummary}
-                  disabled={loading === 'summary'}
-                >
-                  {loading === 'summary' ? '⟳ Generating...' : '✨ Generate Summary'}
-                </button>
-                <button
-                  onClick={handleQuiz}
-                  style={loading === 'quiz' ? {...styles.btnQuiz, opacity: 0.6} : styles.btnQuiz}
-                  disabled={loading === 'quiz'}
-                >
-                  {loading === 'quiz' ? '⟳ Generating...' : '🎯 Generate Quiz'}
-                </button>
-              </div>
-
-              {content && (
-                <p style={styles.charCount}>{content.length.toLocaleString()} characters loaded</p>
-              )}
-            </div>
-          )}
-
-          {/* Summary Tab */}
-          {activeTab === 'summary' && (
-            <div style={styles.summarySection}>
-              {summary ? (
-                <>
-                  <div style={styles.summaryHeader}>
-                    <h3 style={styles.summaryTitle}>✨ AI Generated Summary</h3>
-                    <button onClick={() => setActiveTab('upload')} style={styles.backBtn}>← Back</button>
-                  </div>
-                  <div style={styles.summaryCard}>
-                    <div style={styles.summaryText}>{summary}</div>
-                  </div>
+                <div style={styles.actionRow} className="actionRow">
+                  <button
+                    onClick={handleSummary}
+                    style={loading === 'summary' ? {...styles.btnSummary, opacity: 0.6} : styles.btnSummary}
+                    disabled={loading === 'summary'}
+                  >
+                    {loading === 'summary' ? '⟳ Generating...' : '✨ Generate Summary'}
+                  </button>
                   <button
                     onClick={handleQuiz}
-                    style={loading === 'quiz' ? {...styles.btnQuiz, opacity: 0.6, marginTop: '16px'} : {...styles.btnQuiz, marginTop: '16px'}}
+                    style={loading === 'quiz' ? {...styles.btnQuiz, opacity: 0.6} : styles.btnQuiz}
                     disabled={loading === 'quiz'}
                   >
-                    {loading === 'quiz' ? '⟳ Generating...' : '🎯 Generate Quiz from this content'}
-                  </button>
-                </>
-              ) : (
-                <div style={styles.emptyState}>
-                  <div style={styles.emptyIcon}>✨</div>
-                  <p style={styles.emptyText}>No summary yet</p>
-                  <p style={styles.emptySubtext}>Go to Study Material tab and click Generate Summary</p>
-                  <button onClick={() => setActiveTab('upload')} style={styles.btnSummary}>
-                    ← Go to Study Material
+                    {loading === 'quiz' ? '⟳ Generating...' : '🎯 Generate Quiz'}
                   </button>
                 </div>
-              )}
-            </div>
-          )}
 
-          {/* Quiz Tab */}
-          {activeTab === 'quiz' && (
-            <div style={styles.quizSection}>
-              {quizData.length === 0 ? (
-                <div style={styles.emptyState}>
-                  <div style={styles.emptyIcon}>🎯</div>
-                  <p style={styles.emptyText}>No quiz yet</p>
-                  <p style={styles.emptySubtext}>Go to Study Material tab and click Generate Quiz</p>
-                  <button onClick={() => setActiveTab('upload')} style={styles.btnQuiz}>
-                    ← Go to Study Material
-                  </button>
-                </div>
-              ) : score !== null ? (
-                // Score Screen
-                <div style={styles.scoreScreen}>
-                  <div style={styles.scoreCircle}>
-                    <div style={styles.scoreNumber}>{scorePercent}%</div>
-                    <div style={styles.scoreLabel}>Score</div>
+                {content && (
+                  <p style={styles.charCount}>{content.length.toLocaleString()} characters loaded</p>
+                )}
+              </div>
+            )}
+
+            {/* Summary Tab */}
+            {activeTab === 'summary' && (
+              <div style={styles.summarySection}>
+                {summary ? (
+                  <>
+                    <div style={styles.summaryHeader}>
+                      <h3 style={styles.summaryTitle}>✨ AI Generated Summary</h3>
+                      <button onClick={() => setActiveTab('upload')} style={styles.backBtn}>← Back</button>
+                    </div>
+                    <div style={styles.summaryCard}>
+                      <div style={styles.summaryText}>{summary}</div>
+                    </div>
+                    <button
+                      onClick={handleQuiz}
+                      style={loading === 'quiz'
+                        ? {...styles.btnQuiz, opacity: 0.6, marginTop: '16px'}
+                        : {...styles.btnQuiz, marginTop: '16px'}}
+                      disabled={loading === 'quiz'}
+                    >
+                      {loading === 'quiz' ? '⟳ Generating...' : '🎯 Generate Quiz from this content'}
+                    </button>
+                  </>
+                ) : (
+                  <div style={styles.emptyState}>
+                    <div style={styles.emptyIcon}>✨</div>
+                    <p style={styles.emptyText}>No summary yet</p>
+                    <p style={styles.emptySubtext}>Go to Study Material tab and click Generate Summary</p>
+                    <button onClick={() => setActiveTab('upload')} style={styles.btnSummary}>
+                      ← Go to Study Material
+                    </button>
                   </div>
-                  <h2 style={styles.scoreTitle}>
-                    {scorePercent === 100 ? '🎉 Perfect Score!' :
-                     scorePercent >= 70 ? '👍 Well done!' :
-                     scorePercent >= 50 ? '📚 Good effort!' : '💪 Keep practicing!'}
-                  </h2>
-                  <p style={styles.scoreSubtitle}>
-                    You got <strong style={{color: '#a5b4fc'}}>{score}</strong> out of <strong style={{color: '#a5b4fc'}}>{quizData.length}</strong> questions correct
-                  </p>
+                )}
+              </div>
+            )}
 
-                  {/* Answer Review */}
-                  <div style={styles.reviewSection}>
-                    {quizData.map((q, index) => {
-                      const userAnswer = answers[index] || '';
-                      const isCorrect = userAnswer.trim().toLowerCase().startsWith(
-                        q.correctAnswer?.trim().toLowerCase()
-                      ) || userAnswer.trim().toLowerCase() === q.correctAnswer?.trim().toLowerCase();
-                      return (
-                        <div key={index} style={{...styles.reviewCard, borderColor: isCorrect ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}}>
-                          <div style={styles.reviewHeader}>
-                            <span style={{color: isCorrect ? '#4ade80' : '#f87171'}}>{isCorrect ? '✓' : '✗'}</span>
-                            <span style={styles.reviewQ}>Q{index + 1}. {q.question}</span>
+            {/* Quiz Tab */}
+            {activeTab === 'quiz' && (
+              <div style={styles.quizSection}>
+                {quizData.length === 0 ? (
+                  <div style={styles.emptyState}>
+                    <div style={styles.emptyIcon}>🎯</div>
+                    <p style={styles.emptyText}>No quiz yet</p>
+                    <p style={styles.emptySubtext}>Go to Study Material tab and click Generate Quiz</p>
+                    <button onClick={() => setActiveTab('upload')} style={styles.btnQuiz}>
+                      ← Go to Study Material
+                    </button>
+                  </div>
+                ) : score !== null ? (
+                  <div style={styles.scoreScreen}>
+                    <div style={styles.scoreCircle} className="scoreCircle">
+                      <div style={styles.scoreNumber} className="scoreNumber">{scorePercent}%</div>
+                      <div style={styles.scoreLabel}>Score</div>
+                    </div>
+                    <h2 style={styles.scoreTitle}>
+                      {scorePercent === 100 ? '🎉 Perfect Score!' :
+                       scorePercent >= 70 ? '👍 Well done!' :
+                       scorePercent >= 50 ? '📚 Good effort!' : '💪 Keep practicing!'}
+                    </h2>
+                    <p style={styles.scoreSubtitle}>
+                      You got <strong style={{color: '#a5b4fc'}}>{score}</strong> out of{' '}
+                      <strong style={{color: '#a5b4fc'}}>{quizData.length}</strong> questions correct
+                    </p>
+
+                    <div style={styles.reviewSection}>
+                      {quizData.map((q, index) => {
+                        const userAnswer = answers[index] || '';
+                        const isCorrect =
+                          userAnswer.trim().toLowerCase().startsWith(q.correctAnswer?.trim().toLowerCase()) ||
+                          userAnswer.trim().toLowerCase() === q.correctAnswer?.trim().toLowerCase();
+                        return (
+                          <div key={index} style={{...styles.reviewCard, borderColor: isCorrect ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}}>
+                            <div style={styles.reviewHeader}>
+                              <span style={{color: isCorrect ? '#4ade80' : '#f87171'}}>{isCorrect ? '✓' : '✗'}</span>
+                              <span style={styles.reviewQ}>Q{index + 1}. {q.question}</span>
+                            </div>
+                            {!isCorrect && (
+                              <p style={styles.correctAns}>Correct: {q.correctAnswer}</p>
+                            )}
                           </div>
-                          {!isCorrect && (
-                            <p style={styles.correctAns}>Correct: {q.correctAnswer}</p>
-                          )}
+                        );
+                      })}
+                    </div>
+
+                    <button onClick={() => { setScore(null); setAnswers({}); }} style={styles.retryBtn}>
+                      🔄 Try Again
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div style={styles.quizProgress}>
+                      <span style={styles.quizProgressText}>
+                        {Object.keys(answers).length} / {quizData.length} answered
+                      </span>
+                      <div style={styles.progressBar}>
+                        <div style={{
+                          ...styles.progressFill,
+                          width: `${(Object.keys(answers).length / quizData.length) * 100}%`
+                        }} />
+                      </div>
+                    </div>
+
+                    {quizData.map((q, index) => (
+                      <div key={index} style={styles.questionCard}>
+                        <div style={styles.questionHeader}>
+                          <span style={styles.questionNum}>Q{index + 1}</span>
+                          <p style={styles.questionText}>{q.question}</p>
                         </div>
-                      );
-                    })}
-                  </div>
-
-                  <button
-                    onClick={() => { setScore(null); setAnswers({}); }}
-                    style={styles.retryBtn}
-                  >
-                    🔄 Try Again
-                  </button>
-                </div>
-              ) : (
-                // Quiz Questions
-                <>
-                  <div style={styles.quizProgress}>
-                    <span style={styles.quizProgressText}>
-                      {Object.keys(answers).length} / {quizData.length} answered
-                    </span>
-                    <div style={styles.progressBar}>
-                      <div style={{
-                        ...styles.progressFill,
-                        width: `${(Object.keys(answers).length / quizData.length) * 100}%`
-                      }} />
-                    </div>
-                  </div>
-
-                  {quizData.map((q, index) => (
-                    <div key={index} style={styles.questionCard}>
-                      <div style={styles.questionHeader}>
-                        <span style={styles.questionNum}>Q{index + 1}</span>
-                        <p style={styles.questionText}>{q.question}</p>
+                        <div style={styles.optionsGrid}>
+                          {q.options.map((option, i) => (
+                            <div
+                              key={i}
+                              onClick={() => handleAnswer(index, option)}
+                              style={answers[index] === option
+                                ? {...styles.option, ...styles.optionSelected}
+                                : styles.option}
+                            >
+                              <span style={styles.optionLetter}>
+                                {String.fromCharCode(65 + i)}
+                              </span>
+                              {/* ✅ FIX: A. B. C. D. strip kar diya */}
+                              <span style={styles.optionText}>
+                                {option.replace(/^[A-D]\.\s*/i, '')}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <div style={styles.optionsGrid}>
-                        {q.options.map((option, i) => (
-                          <div
-                            key={i}
-                            onClick={() => handleAnswer(index, option)}
-                            style={answers[index] === option
-                              ? {...styles.option, ...styles.optionSelected}
-                              : styles.option
-                            }
-                          >
-                            <span style={styles.optionLetter}>
-                              {String.fromCharCode(65 + i)}
-                            </span>
-                            <span style={styles.optionText}>{option}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
 
-                  <button
-                    onClick={handleSubmitQuiz}
-                    style={Object.keys(answers).length < quizData.length
-                      ? {...styles.submitQuizBtn, opacity: 0.5, cursor: 'not-allowed'}
-                      : styles.submitQuizBtn
-                    }
-                    disabled={Object.keys(answers).length < quizData.length}
-                  >
-                    Submit Quiz ({Object.keys(answers).length}/{quizData.length} answered)
-                  </button>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-      </main>
-    </div>
+                    <button
+                      onClick={handleSubmitQuiz}
+                      style={Object.keys(answers).length < quizData.length
+                        ? {...styles.submitQuizBtn, opacity: 0.5, cursor: 'not-allowed'}
+                        : styles.submitQuizBtn}
+                      disabled={Object.keys(answers).length < quizData.length}
+                    >
+                      Submit Quiz ({Object.keys(answers).length}/{quizData.length} answered)
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
 
@@ -457,6 +471,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     border: '1px solid rgba(99,102,241,0.3)',
+    flexShrink: 0,
   },
   headerBrand: {
     fontSize: '18px',
@@ -488,6 +503,7 @@ const styles = {
     fontSize: '12px',
     fontWeight: '700',
     color: '#fff',
+    flexShrink: 0,
   },
   userName: {
     color: 'rgba(255,255,255,0.7)',
@@ -502,6 +518,7 @@ const styles = {
     color: 'rgba(255,255,255,0.5)',
     fontSize: '13px',
     cursor: 'pointer',
+    whiteSpace: 'nowrap',
   },
   main: {
     maxWidth: '780px',
@@ -524,7 +541,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '8px',
+    gap: '6px',
     padding: '10px 16px',
     background: 'transparent',
     border: 'none',
@@ -577,10 +594,7 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
   },
-  uploadIcon: {
-    fontSize: '36px',
-    opacity: 0.6,
-  },
+  uploadIcon: { fontSize: '36px', opacity: 0.6 },
   uploadSuccess: {
     width: '48px',
     height: '48px',
@@ -596,7 +610,6 @@ const styles = {
   uploadSpinner: {
     fontSize: '32px',
     color: '#a5b4fc',
-    animation: 'spin 1s linear infinite',
   },
   uploadText: {
     color: 'rgba(255,255,255,0.5)',
@@ -609,11 +622,14 @@ const styles = {
     fontSize: '14px',
     fontWeight: '600',
     margin: 0,
+    textAlign: 'center',
+    wordBreak: 'break-all',
   },
   uploadSubtext: {
     color: 'rgba(255,255,255,0.3)',
     fontSize: '12px',
     margin: 0,
+    textAlign: 'center',
   },
   formatChips: {
     display: 'flex',
@@ -663,9 +679,11 @@ const styles = {
   actionRow: {
     display: 'flex',
     gap: '12px',
+    flexWrap: 'wrap',
   },
   btnSummary: {
     flex: 1,
+    minWidth: '140px',
     padding: '13px 20px',
     background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
     border: 'none',
@@ -677,6 +695,7 @@ const styles = {
   },
   btnQuiz: {
     flex: 1,
+    minWidth: '140px',
     padding: '13px 20px',
     background: 'linear-gradient(135deg, #0891b2, #06b6d4)',
     border: 'none',
@@ -698,6 +717,8 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: '20px',
+    flexWrap: 'wrap',
+    gap: '8px',
   },
   summaryTitle: {
     color: '#fff',
@@ -886,11 +907,13 @@ const styles = {
     fontSize: '22px',
     fontWeight: '700',
     margin: 0,
+    textAlign: 'center',
   },
   scoreSubtitle: {
     color: 'rgba(255,255,255,0.4)',
     fontSize: '14px',
     margin: 0,
+    textAlign: 'center',
   },
   reviewSection: {
     width: '100%',
