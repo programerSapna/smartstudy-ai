@@ -52,7 +52,7 @@ public class GeminiService {
         String url = "https://openrouter.ai/api/v1/chat/completions";
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "mistralai/mistral-small-3.1-24b-instruct:free");
+        requestBody.put("model", "openrouter/free");
 
         Map<String, String> message = new HashMap<>();
         message.put("role", "user");
