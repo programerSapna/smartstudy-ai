@@ -101,7 +101,33 @@ const handleSubmitQuiz = async () => {
       totalQuestions: quizData.length
     });
   };
-
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setFileLoading(true);
+    setUploadedFile(file.name);
+    try {
+      const res = await uploadPdf(file);
+      if (res.data.text && res.data.text.trim()) {
+        setContent(res.data.text);
+        const pages = res.data.pages || '5';
+        setUploadedFile(`${file.name} • ${pages} pages extracted`);
+        alert(`✅ File extracted! Note: Only first 5 pages are processed for best results.`);
+      } else {
+        alert('No text found. Please try another file.');
+        setUploadedFile('');
+      }
+    } catch (err) {
+      if (err.response?.status === 413) {
+        alert('❌ File too large! Please use a file under 10MB.');
+      } else {
+        alert('Failed to upload file. Please try again.');
+      }
+      setUploadedFile('');
+    } finally {
+      setFileLoading(false);
+    }
+  };
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = '/login';
@@ -191,7 +217,7 @@ const handleSubmitQuiz = async () => {
                           <span key={f} style={styles.chip}>{f}</span>
                         ))}
                       </div>
-                      <p style={styles.uploadSubtext}>Supports handwritten notes via OCR</p>
+                      <p style={styles.uploadSubtext}>Supports handwritten notes via OCR • Max 5 pages recommended</p>
                     </div>
                   )}
                 </label>
