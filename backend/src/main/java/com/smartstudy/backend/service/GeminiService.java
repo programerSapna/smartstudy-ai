@@ -28,10 +28,17 @@ public class GeminiService {
             questionCount = 20;
         }
 
-        String prompt = "Generate exactly " + questionCount + " multiple choice questions based on this content. " +
-                "Return ONLY a pure JSON array, no markdown, no code blocks, no extra text. " +
-                "Format: [{\"question\":\"...\",\"options\":[\"A ...\",\"B ...\",\"C ...\",\"D ...\"],\"correctAnswer\":\"A\"}] " +
-                "Content: " + content;
+        String prompt = "Generate exactly " + questionCount + " multiple choice questions based on this content.\n" +
+                "YOU MUST FOLLOW THESE RULES STRICTLY:\n" +
+                "1. Return ONLY the JSON array. Nothing before it, nothing after it.\n" +
+                "2. Do NOT use markdown. Do NOT use ```json or ``` anywhere.\n" +
+                "3. Do NOT write any explanation or intro text.\n" +
+                "4. correctAnswer must be ONLY the letter: A, B, C, or D\n" +
+                "5. Each option must start with the letter and period: 'A. text'\n\n" +
+                "Output format (strictly follow this):\n" +
+                "[{\"question\":\"...\",\"options\":[\"A. ...\",\"B. ...\",\"C. ...\",\"D. ...\"],\"correctAnswer\":\"A\"}]\n\n" +
+                "Content:\n" + content;
+
         return callGemini(prompt);
     }
 
@@ -40,6 +47,7 @@ public class GeminiService {
                 "of the following study content: " + content;
         return callGemini(prompt);
     }
+
     private String callGemini(String prompt) {
         String url = "https://openrouter.ai/api/v1/chat/completions";
 
@@ -61,7 +69,18 @@ public class GeminiService {
             ResponseEntity<Map> response = restTemplate.postForEntity(url, entity, Map.class);
             List<Map> choices = (List<Map>) response.getBody().get("choices");
             Map message1 = (Map) choices.get(0).get("message");
-            return (String) message1.get("content");
+            String rawContent = (String) message1.get("content");
+
+            // Mistral kabhi kabhi markdown wrap kar deta hai — strip karo
+            rawContent = rawContent.trim();
+            if (rawContent.startsWith("```")) {
+                rawContent = rawContent
+                        .replaceAll("(?s)```json\\s*", "")
+                        .replaceAll("(?s)```\\s*", "")
+                        .trim();
+            }
+
+            return rawContent;
         } catch (Exception e) {
             return "AI service error: " + e.getMessage();
         }
